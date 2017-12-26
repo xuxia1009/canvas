@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            font-size: 18px;
+        }
+    </style>
+    <title>Document</title>
+</head>
+
+<body>
+    <canvas class="box" style="border:1px solid #ccc;font-size:18px ;" width="800px" height="400px"></canvas>
+</body>
+<script>
+    var box = document.querySelector(".box");
+    var api = box.getContext("2d");
+    api.moveTo(50, 0);
+    api.lineTo(50, 350);
+    api.stroke();
+    api.lineTo(800, 350);
+    api.stroke();
+    api.moveTo(50, 350);
+    api.lineTo(800, 350);
+    api.closePath();
+    var w = 800 / 8;
+
+    function setNum(min, max) {
+        return Math.floor(Math.random() * (max - min + 1) + min);
+    }
+    var data = [];
+    for (var i = 0; i < 8; i++) {
+        data.push({
+            x: i * w,
+            y: -setNum(0, 350)
+        })
+    }
+    api.translate(50, 350);
+    api.beginPath();
+    api.moveTo(data[0].x, data[0].y);
+    data.forEach(function(v, i) {
+        api.lineTo(v.x, v.y);
+    })
+    api.strokeStyle = "red";
+    api.stroke();
+    var obj = {
+        xarea: [1, 2, 3, 4, 5, 6, 7, 8],
+        cont: ["北京", "上海", "深圳", "广州", "海南", "新疆", "成都", "杭州"],
+        x: [0, 100, 200, 300, 400, 500, 600, 700]
+    }
+    obj.x.forEach(function(v, i) {
+        api.beginPath();
+        api.moveTo((i + 1) * w, 0);
+        api.lineTo((i + 1) * w, 5);
+        api.stroke();
+        api.beginPath();
+        api.textBaseline = "top";
+        api.fillText(obj.cont[i], i * w + w / 2, 10);
+        api.fill()
+    })
+</script>
+
+</html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+        
+        .box {
+            border: 1px solid #ccc;
+            margin: 50px;
+            background: #ccc;
+        }
+    </style>
+    <title>Document</title>
+</head>
+
+<body>
+    <canvas class="box" width="600" height="400"></canvas>
+</body>
+<script>
+    var box = document.querySelector(".box");
+    var api = box.getContext("2d");
+
+    var obj = {
+        x: [8, 10, 12, 14, 16, 18, 20, 22],
+        y: [0, 2, 4, 6, 8, 10, 12],
+        cont: [3, 11, 6, 3, 5, 2, 1]
+    }
+    var w = 550 / obj.x.length;
+    var h = 350 / obj.y.length;
+    var h1 = 350 / 12;
+    obj.x.forEach(function(v, i) {
+        api.beginPath();
+        api.moveTo((i + 1) * w, 0);
+        api.lineTo((i + 1) * w, 5);
+        api.stroke();
+        api.closePath();
+        api.textAlign = "left";
+        api.textBaseline = "top";
+        api.fillText(v, i * w - 5, 10);
+        api.fill();
+        api.closePath();
+    })
+    var data = [];
+    for (var i = 0; i < obj.cont.length; i++) {
+        data.push({
+            x: i * w,
+            y: -h1 * obj.cont[i]
+        })
+    }
+    var ind = 10;
+    var timer = null;
+    api.translate(50, 350);
+    timer = setInterval(function() {
+        ind--;
+        if (ind <= 0) {
+            clearInterval(timer);
+            return false;
+        }
+        api.clearRect(-50, -350, 600, 400);
+        api.beginPath();
+        api.moveTo(0, 0);
+        data.forEach(function(v, i) {
+            api.lineTo(v.x / ind, v.y);
+            api.stroke();
+        })
+        api.beginPath();
+        api.moveTo(0, 0);
+        api.lineTo(0, -350);
+        api.moveTo(0, 0);
+        api.lineTo(550, 0);
+        api.stroke();
+        api.closePath();
+
+
+    }, 1000 / 60)
+</script>
+
+</html>

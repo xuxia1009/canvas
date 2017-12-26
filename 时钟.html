@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+        
+        #box {
+            border: 1px solid #ccc;
+            margin: 50px;
+            background: #ccc;
+        }
+    </style>
+    <title>Document</title>
+</head>
+
+<body>
+    <canvas id="box" width="400" height="400"></canvas>
+</body>
+<script>
+    var box = document.querySelector("#box");
+    var api = box.getContext("2d");
+    var deg = Math.PI / 180;
+    api.translate(200, 200);
+
+    function draw() {
+        api.beginPath();
+        api.moveTo(100, 0);
+        api.arc(0, 0, 107, 0, 360 * deg, false);
+        api.lineWidth = 14;
+        api.stroke();
+        var color = api.createLinearGradient(-100, -100, 100, 100);
+        color.addColorStop(0, "#ccc");
+        color.addColorStop(1, "#333");
+        api.shadowOffsetX = 3;
+        api.shadowOffsetY = 3;
+        api.shadowBlur = 5;
+        api.shadowColor = "#333";
+        api.beginPath();
+        api.moveTo(0, 0);
+        api.arc(0, 0, 4, 0, 360 * deg, false);
+        api.fill();
+        for (var i = 1; i <= 60; i++) {
+            api.rotate(6 * deg);
+            api.beginPath();
+            api.moveTo(100, 0);
+            if (i % 5 == 0) {
+                api.lineWidth = 2;
+                api.lineTo(90, 0);
+            } else {
+                api.lineWidth = 1;
+                api.lineTo(95, 0);
+            }
+            api.strokeStyle = "#333";
+            api.stroke();
+            api.restore();
+        }
+        var h = [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 1, 2];
+        h.forEach(function(v, i) {
+            var x = Math.cos(30 * i * deg) * 80;
+            var y = Math.sin(30 * i * deg) * 80;
+            api.beginPath();
+            api.textAlign = "center";
+            api.textBaseline = "middle";
+            api.fillText(v, x, y);
+        })
+    }
+    var timer = null;
+
+
+    draw();
+
+    function auto() {
+        api.clearRect(-200, -200, 400, 400);
+        draw();
+        var h = new Date().getHours() > 12 ? new Date().getHours() - 12 : new Date().getHours(),
+            f = new Date().getMinutes(),
+            m = new Date().getSeconds();
+        api.save();
+        api.rotate((m - 15) * 6 * deg);
+        api.beginPath();
+        api.moveTo(-10, 0);
+        api.lineTo(70, 0);
+        api.strokeStyle = "red";
+        api.lineWidth = 2;
+        api.stroke();
+        api.restore();
+        api.save();
+        api.rotate((f - 15) * 6 * deg);
+        api.beginPath();
+        api.moveTo(-10, 0);
+        api.lineTo(60, 0);
+        api.strokeStyle = "#000";
+        api.lineWidth = 2;
+        api.stroke();
+        api.restore();
+        api.save();
+        api.rotate((m / 3600 + (f / 60) + h - 3) * 30 * deg);
+        api.beginPath();
+        api.moveTo(-10, 0);
+        api.lineTo(40, 0);
+        api.strokeStyle = "#000";
+        api.lineWidth = 3;
+        api.stroke();
+        api.restore();
+    }
+    auto();
+    timer = setInterval(function() {
+        auto();
+    }, 1000)
+</script>
+
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <canvas class="box" width="400" height="400"></canvas>
+</body>
+<script>
+    var box = document.querySelector(".box");
+    var api = box.getContext("2d");
+    var deg = Math.PI / 180;
+    var data = [{
+        deg: 40,
+        color: "skyblue"
+    }, {
+        deg: 90,
+        color: "pink"
+    }, {
+        deg: 60,
+        color: "limegreen"
+    }, {
+        deg: 110,
+        color: "yellow"
+    }]
+    var sum = 0;
+    for (var i = 0; i < data.length; i++) {
+        sum += data[i].deg;
+    }
+    var start = 0;
+    data.forEach(function(v, i) {
+        var r = v.deg / sum * 360;
+        start = draw(start, start + r, v.color);
+    })
+
+    function draw(start, end, color) {
+        var num = 0;
+
+        function move() {
+            num++;
+            if (num + start <= end) {
+                requestAnimationFrame(move);
+            }
+            api.beginPath();
+            api.moveTo(200, 200);
+            api.arc(200, 200, 100, start * deg, (start + num) * deg);
+            api.fillStyle = color;
+            api.fill();
+        }
+        move();
+        return end;
+    }
+</script>
+
+</html>

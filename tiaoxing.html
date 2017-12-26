@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+        
+        .box {
+            border: 1px solid #ccc;
+            margin: 50px;
+            background: #ccc;
+        }
+    </style>
+    <title>Document</title>
+</head>
+
+<body>
+    <canvas class="box" width="600" height="400"></canvas>
+</body>
+<script>
+    var box = document.querySelector(".box");
+    var api = box.getContext("2d");
+    api.beginPath();
+    api.moveTo(50, 0);
+    api.lineTo(50, 350);
+    api.lineTo(550, 350);
+    api.stroke();
+    api.closePath();
+    api.translate(50, 350);
+    var obj = {
+        x: [8, 10, 12, 14, 16, 18, 20, 22],
+        y: [0, 2, 4, 6, 8, 10, 12],
+        cont: [3, 11, 6, 3, 5, 2, 1]
+    }
+    var w = 550 / obj.x.length;
+    var h = 350 / obj.y.length;
+    var h1 = 350 / 12;
+    obj.x.forEach(function(v, i) {
+        api.beginPath();
+        api.moveTo((i + 1) * w, 0);
+        api.lineTo((i + 1) * w, 5);
+        api.stroke();
+        api.closePath();
+        api.textAlign = "left";
+        api.textBaseline = "top";
+        api.fillText(v, i * w - 5, 10);
+        api.fill();
+        api.closePath();
+    })
+    obj.y.forEach(function(v, i) {
+        api.beginPath();
+        api.moveTo(0, -(i + 1) * h);
+        api.lineTo(-5, -(i + 1) * h);
+        api.stroke();
+        api.closePath();
+        api.textAlign = "right";
+        api.textBaseline = "middle";
+        api.fillText(v, -10, -i * h);
+        api.fill();
+        api.closePath();
+    })
+    obj.cont.forEach(function(v, i) {
+        api.beginPath();
+        api.moveTo((i + 0.5) * w, 0);
+        api.lineTo((i + 0.5) * w, -h1 * v);
+        api.lineWidth = w;
+        switch (i) {
+            case 0:
+                api.strokeStyle = "blue";
+                break;
+            case 1:
+                api.strokeStyle = "red";
+                break;
+            case 2:
+                api.strokeStyle = "yellow";
+                break;
+            case 3:
+                api.strokeStyle = "green";
+                break;
+            case 4:
+                api.strokeStyle = "pink";
+                break;
+            case 5:
+                api.strokeStyle = "orange";
+                break;
+            case 6:
+                api.strokeStyle = "limegreen";
+                break;
+        }
+        api.stroke();
+        api.closePath();
+        api.textAlign = "center";
+        api.textBaseline = "top";
+        api.fillText(v, (i + 0.5) * w, -v * h1);
+        api.fill();
+    })
+</script>
+
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+        
+        .box {
+            border: 1px solid #ccc;
+            margin: 50px;
+            background: #ccc;
+        }
+    </style>
+    <title>Document</title>
+</head>
+
+<body>
+    <canvas class="box" width="400" height="400"></canvas>
+</body>
+<script>
+    var box = document.querySelector(".box");
+    var api = box.getContext("2d");
+    var deg = Math.PI / 180;
+    var data = [];
+    for (var i = 0; i < setNum(6, 3); i++) {
+        data.push({
+            num: setNum(60, 40),
+            color: `rgb(${setNum(255, 0)},${setNum(255, 0)},${setNum(255, 0)})`
+        })
+    }
+
+    function setNum(max, min) {
+        return Math.floor(Math.random() * (max - min + 1) + min);
+    }
+    var start = 0,
+        end = 0,
+        sum = 0;
+    api.clearRect(100, 100, 200, 200);
+    data.forEach(function(v, i) {
+        sum += v.num;
+        end = v.num / sum * 360 + start;
+        api.beginPath();
+        api.moveTo(200, 200);
+        api.arc(200, 200, 100, start * deg, end * deg, false);
+        api.fillStyle = v.color;
+        api.fill();
+        start = end;
+    })
+    api.beginPath();
+    api.moveTo(200, 200);
+    api.arc(200, 200, 80, 0, 360 * deg, false);
+    api.fillStyle = "#ccc";
+    api.fill();
+</script>
+
+</html>

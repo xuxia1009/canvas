@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+        
+        .box {
+            background: #eee;
+        }
+    </style>
+    <title>Document</title>
+</head>
+
+<body>
+    <canvas class="box" width="600" height="600"></canvas>
+</body>
+<script>
+    var api = document.querySelector(".box").getContext("2d");
+    api.translate(50, 550);
+    api.beginPath();
+    api.moveTo(0, 0);
+    api.lineTo(0, -550);
+    api.stroke();
+    api.beginPath();
+    api.moveTo(0, 0);
+    api.lineTo(550, 0);
+    api.stroke();
+    var data = {
+        yAxis: {
+            data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
+        },
+        xAxis: {
+            data: ['0', '500', '1,000', '1,500', '2,000', '2,500', '3,000']
+        },
+        series: [{
+            name: '直接访问',
+            color: '#EA2B2B',
+            data: [320, 302, 301, 334, 390, 330, 320]
+        }, {
+            name: '邮件营销',
+            color: '#352596',
+            data: [120, 132, 101, 134, 90, 230, 210]
+        }, {
+            name: '联盟广告',
+            color: '#64BAFC',
+            data: [220, 182, 191, 234, 290, 330, 310]
+        }, {
+            name: '视频广告',
+            color: '#FC9A9A',
+            data: [150, 212, 201, 154, 190, 330, 410]
+        }, {
+            name: '搜索引擎',
+            color: '#57F8CF',
+            data: [820, 832, 901, 934, 1290, 1330, 1320]
+        }]
+    }
+    var w = 550 / data.xAxis.data.length;
+    data.xAxis.data.forEach(function(v, i) {
+        api.beginPath();
+        api.moveTo(w * i, 0);
+        api.lineTo(w * i, 10);
+        api.stroke();
+        api.textAlign = "center";
+        api.textBaseline = "top";
+        api.fillText(v, w * i, 10);
+        api.fill();
+        api.beginPath();
+        api.moveTo(w * i, 0);
+        api.lineTo(w * i, -550);
+        api.strokeStyle = "#ccc";
+        api.stroke();
+    })
+    var a = 550 / 3000;
+    var start = [],
+        end = [];
+    var h = 550 / data.yAxis.data.length;
+    data.yAxis.data.forEach(function(v, i) {
+        api.beginPath();
+        api.moveTo(0, -h * i);
+        api.lineTo(-10, -h * i);
+        api.stroke();
+        api.textAlign = "center";
+        api.textBaseline = "middle";
+        api.fillText(v, -15, -h * (i + 0.5));
+        api.fill();
+
+    });
+    data.series.forEach(function(val, j) {
+        val.data.forEach(function(v, i) {
+            start.push(0);
+            end.push(v * a + start[i] * 1);
+            api.beginPath();
+            api.moveTo(start[i], -h * (i + 0.5));
+            api.lineTo(end[i], -h * (i + 0.5));
+            api.strokeStyle = data.series[j].color;
+            api.lineWidth = "40";
+            api.stroke();
+            api.textAlign = "right";
+            api.textBaseline = "middle"; 
+            api.fillText(v, end[i] - 5, -h * (i + 0.5));
+            api.fillStyle = "#fff";
+        })
+        start = end;
+        end = [];
+    })
+</script>
+
+</html>
